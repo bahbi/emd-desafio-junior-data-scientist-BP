@@ -105,15 +105,106 @@ aba1.plotly_chart(fig_bairros)
 
 #------------------------------------------------------
 # Conteúdo da aba1 - exibição do gráfico
-aba1.subheader("Chamados - Gráfico de Linha")
-aba1.line_chart(Chamados_1746_04_01)
+#aba1.subheader("Chamados - Gráfico de Linha")
+#aba1.line_chart(Chamados_1746_04_01)
 
 
 #Parte 2
 
-aba2.subheader("A tab with the data") 
+
 #tab2.write(data)
 #st.dataframe(Chamados_1746_04_01)
+
+df_filtrado1 = pd.read_csv('./Dados_1/chamados_parte2.csv', delimiter=',')
+df2_selecionado = df_filtrado1[['id_chamado', 'data_inicio','id_bairro','categoria','tipo',
+                          'subtipo','status','longitude','latitude','reclamacoes']] #,'geometry'
+df3 = pd.read_csv('./Dados_1/hoteleira_ocupacao.csv', delimiter=',')
+df_uniao_chamados_bairros_PS = pd.merge(df2_selecionado, df_selecionado_bairros, on='id_bairro', how='left')
+
+aba2.metric('Quantidade de Chamados', df_uniao_chamados_bairros_PS.shape[0])
+aba2.subheader("teste") 
+
+#grafico 1
+df_chamados = pd.DataFrame(df_filtrado1)
+df_categorias = pd.DataFrame(df3)
+
+# Convertendo para datetime
+df_chamados['data_inicio'] = pd.to_datetime(df_chamados['data_inicio'])
+df_categorias['data_inicial'] = pd.to_datetime(df_categorias['data_inicial'])
+df_categorias['data_final'] = pd.to_datetime(df_categorias['data_final'])
+
+# Função para verificar se a data de abertura está dentro do intervalo
+def verifica_correspondencia(data_inicio, data_inicial, data_final):
+    return (data_inicio >= data_inicial) & (data_inicio <= data_final)
+
+# Iterando sobre os chamados e verificando se correspondem a alguma categoria
+chamados_correspondentes = []
+for _, chamado in df_chamados.iterrows():
+    for _, categoria in df_categorias.iterrows():
+        if verifica_correspondencia(chamado['data_inicio'], categoria['data_inicial'], categoria['data_final']):
+            chamados_correspondentes.append((chamado['id_chamado'], categoria['evento'], chamado['data_inicio']))
+            break
+
+df_correspondencias = pd.DataFrame(chamados_correspondentes, columns=['id_chamado', 'evento', 'data_inicio'])
+
+df_correspondencias['numero_aparicoes'] = df_correspondencias.groupby(['id_chamado', 'evento'])['data_inicio'].transform('count')
+
+
+contagem_categorias = df_correspondencias['evento'].value_counts().reset_index()
+contagem_categorias.columns = ['evento', 'numero_aparicoes']
+
+fig_tipo_2 = px.bar(
+    contagem_categorias.head(10),
+    x='evento', 
+    y='numero_aparicoes',  # Inverter a ordem de x e y
+    orientation='v',  # Mudar para vertical
+    labels={'numero_aparicoes': 'Quantidade', 'evento': ''}, 
+    title='Top 10 Tipos de Ocorrências',
+    color_discrete_sequence=px.colors.qualitative.Pastel2  # Escolha da paleta de cores
+)
+
+# Ordenar o eixo x (tipos) do maior para o menor com base na contagem
+fig_tipo_2.update_layout(xaxis={'categoryorder': 'total descending'})
+
+# Exibindo o gráfico de barras na aba1
+aba2.subheader("Chamados - Gráfico de bairros")
+aba2.plotly_chart(fig_tipo_2)
+
+# Mostrar o gráfico
+#fig_tipo.show()
+
+#Grafico de linhas
+df_uniao_chamados_bairros_PS['data_inicio'] = pd.to_datetime(df_uniao_chamados_bairros_PS['data_inicio'])
+
+# Agrupar o número de chamados por data
+df_tendencia = df_uniao_chamados_bairros_PS.groupby(df_uniao_chamados_bairros_PS['data_inicio'].dt.date).size().reset_index(name='id_chamado')
+
+
+fig = px.line(df_tendencia,
+                  x='data_inicio',
+                  y='id_chamado',
+                  title='Tendência de Chamados ao Longo do Tempo',
+                  color_discrete_sequence=px.colors.qualitative.Pastel2)
+
+fig.update_xaxes(title_text='Data')
+fig.update_yaxes(title_text='Número de Chamados')
+
+aba2.plotly_chart(fig)
+#st.plotly_chart(fig)
+
+df_final = pd.merge(df_correspondencias, df_uniao_chamados_bairros_PS, on='id_chamado', how='left')
+fig_m1 = px.scatter_mapbox(df_final,
+                            lat='latitude',
+                            lon='longitude',
+                            color='evento',
+                            hover_name='nome',
+                            zoom=10,
+                            mapbox_style="carto-positron",
+                            center=dict(lat=-22.9068467, lon=-43.1728965),
+                            title='Pontos de Chamados por evento')
+
+#fig_m1
+aba2.plotly_chart(fig_m1)
 
 #Parte 3
 aba3.subheader("A tab with the data") 
