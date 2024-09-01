@@ -29,7 +29,7 @@ st.markdown("*Streamlit* is **really** ***cool***.")
 
 aba1.metric('Quantidade de Chamados', Chamados_1746_04_01.shape[0])
 aba1.subheader("Chamados - DataFrame Visualização")
-aba1.dataframe(Chamados_1746_04_01)
+#aba1.dataframe(Chamados_1746_04_01)
 
 # Adição do novo conteúdo na aba1
 # Obtendo a contagem de ocorrências por tipo
@@ -86,7 +86,6 @@ bairros_mais_chamados_df = pd.DataFrame({'nome':bairros_mais_chamados.index, 'co
 bairros_mais_chamados_df.head()
 
 
-
 fig_bairros = criar_grafico_barras(bairros_mais_chamados_df,
                                 x='contagem', 
                                 y='nome', 
@@ -103,6 +102,63 @@ fig_bairros.update_layout(yaxis={'categoryorder': 'total ascending'})
 aba1.subheader("Chamados - Gráfico de bairros")
 aba1.plotly_chart(fig_bairros)
 
+subprefeitura_chamados = df_uniao_chamados_bairros['subprefeitura'].value_counts() #.head(10)
+subprefeitura_chamados = pd.DataFrame({'subprefeitura':subprefeitura_chamados.index, 'contagem':subprefeitura_chamados.values})
+#subprefeitura_chamados.head()
+
+fig_subprefeitura = criar_grafico_barras(subprefeitura_chamados,
+                                x='contagem', 
+                                y='subprefeitura', 
+                                top_n=10, 
+                                orientation='h', 
+                                titulo='Top 10 Tipos de Subprefeitura',
+                                label_x='Quantidade de Ocorrências',
+                                label_y='', 
+                                paleta=px.colors.qualitative.Pastel2)
+
+fig_subprefeitura.update_layout(yaxis={'categoryorder': 'total ascending'})
+
+# Exibindo o gráfico de barras na aba1
+aba1.subheader("Chamados - Gráfico de Subprefeitura")
+aba1.plotly_chart(fig_subprefeitura)
+
+chamados_por_subprefeitura = df_uniao_chamados_bairros.groupby('subprefeitura')['id_chamado'].count()
+subprefeitura_max = chamados_por_subprefeitura.idxmax()
+df_chamados_subprefeitura_max = df_uniao_chamados_bairros[df_uniao_chamados_bairros['subprefeitura'] == subprefeitura_max]
+df_tipos_correspondentes = df_chamados_subprefeitura_max.groupby('tipo')['id_chamado'].count().reset_index()
+df_tipos_correspondentes.columns = ['tipo', 'contagem']
+df_tipos_correspondentes = df_tipos_correspondentes.sort_values(by='contagem', ascending=False)
+
+fig_subprefeitura_ind = criar_grafico_barras(df_tipos_correspondentes,
+                                x='contagem', 
+                                y='tipo', 
+                                top_n=10, 
+                                orientation='h', 
+                                titulo='Tipos predominantes na Subprefeitura Zona Norte',
+                                label_x='Quantidade de Ocorrências',
+                                label_y='', 
+                                paleta=px.colors.qualitative.Pastel2)
+
+fig_subprefeitura_ind .update_layout(yaxis={'categoryorder': 'total ascending'})
+
+# Exibindo o gráfico de barras na aba1
+aba1.subheader("Chamados - Gráfico de Subprefeitura")
+aba1.plotly_chart(fig_subprefeitura_ind)
+
+fig_mapa_sub = px.scatter_mapbox(df_uniao_chamados_bairros,
+                            lat='latitude',
+                            lon='longitude',
+                            color='subprefeitura',
+                            hover_name='nome',
+                            zoom=10,
+                            mapbox_style="carto-positron",
+                            center=dict(lat=-22.9068467, lon=-43.1728965),
+                            title='Pontos de Chamados por Bairro')
+
+#fig_mapa_sub
+
+aba1.subheader("Chamados - distribuição de chamados por subprefeituras")
+aba1.plotly_chart(fig_mapa_sub)
 #------------------------------------------------------
 # Conteúdo da aba1 - exibição do gráfico
 #aba1.subheader("Chamados - Gráfico de Linha")
