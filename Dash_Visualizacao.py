@@ -263,4 +263,21 @@ fig_m1 = px.scatter_mapbox(df_final,
 aba2.plotly_chart(fig_m1)
 
 #Parte 3
+
+df_public_holidays = pd.read_csv('./Dados_1/feriados_ano_pt.csv', delimiter=',')
+daily_dataframe = pd.read_csv('./Dados_1/clima_temperatura.csv', delimiter=',')
+df= pd.read_csv('./Dados_1/classi_tempo_pt.csv', delimiter=',')
+
+aba3.metric('Quantidade de Feriados', df_public_holidays.shape[0])
 aba3.subheader("A tab with the data") 
+aba3.dataframe(df_public_holidays) 
+
+daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'])
+daily_dataframe['year_month'] = daily_dataframe['date'].dt.to_period('M')
+monthly_avg_temp = daily_dataframe.groupby('year_month')['temperature_2m_mean'].mean().reset_index()
+monthly_avg_temp.columns = ['Year-Month', 'Average Temperature']
+
+
+
+
+

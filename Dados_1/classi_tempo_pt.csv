@@ -1,0 +1,29 @@
+cod,day_description,night_description
+0.0,Ensolarado,Claro
+1.0,Principalmente ensolarado,Principalmente claro
+2.0,Parcialmente nublado,Parcialmente nublado
+3.0,Nublado,Nublado
+45.0,Enevoado,Enevoado
+48.0,Nevoeiro de geada,Nevoeiro de geada
+51.0,Chuvisco Leve,Chuvisco Leve
+53.0,Chuvisco,Chuvisco
+55.0,Chuva forte,Chuva forte
+56.0,Chuvisco leve congelante,Chuvisco leve congelante
+57.0,Chuva congelante,Chuva congelante
+61.0,Chuva leve,Chuva leve
+63.0,Chuva,Chuva
+65.0,Chuva Pesada,Chuva Pesada
+66.0,Chuva leve e congelante,Chuva leve e congelante
+67.0,Chuva congelante,Chuva congelante
+71.0,Neve leve,Neve leve
+73.0,Neve,Neve
+75.0,Neve pesada,Neve pesada
+77.0,Grãos de Neve,Grãos de Neve
+80.0,Chuveiros leves,Chuveiros leves
+81.0,Chuveiros,Chuveiros
+82.0,Chuvas torrenciais,Chuvas torrenciais
+85.0,Chuvas leves de neve,Chuvas leves de neve
+86.0,Chuvas de neve,Chuvas de neve
+95.0,Tempestade,Tempestade
+96.0,Trovoadas leves com granizo,Trovoadas leves com granizo
+99.0,Tempestade com granizo,Tempestade com granizo
