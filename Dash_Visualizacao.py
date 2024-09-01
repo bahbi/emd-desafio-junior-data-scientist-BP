@@ -272,12 +272,80 @@ aba3.metric('Quantidade de Feriados', df_public_holidays.shape[0])
 aba3.subheader("A tab with the data") 
 aba3.dataframe(df_public_holidays) 
 
+df_public_holidays['Weekday or Weekend'] = df_public_holidays['Day of Week'].apply(lambda x: 'Semana' if x in ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira'] else 'Fim de Semana')
+df_count = df_public_holidays['Weekday or Weekend'].value_counts().reset_index()
+df_count.columns = ['Weekday or Weekend', 'Total Ocorrências']
+
+fig_dias_semna = px.bar(
+    df_count.head(2),
+    x='Weekday or Weekend',
+    y='Total Ocorrências',  # Inverter a ordem de x e y
+    orientation='v',  # Mudar para vertical
+    labels={'Total Ocorrências': 'Quantidade', 'Weekday or Weekend': ''},
+    title='Média geral por evento e outro ',
+    color_discrete_sequence=px.colors.qualitative.Pastel2  # Escolha da paleta de cores
+)
+
+# Ordenar o eixo x (tipos) do maior para o menor com base na contagem
+fig_dias_semna.update_layout(xaxis={'categoryorder': 'total descending'})
+aba3.plotly_chart(fig_dias_semna)
+
+
+
 daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'])
 daily_dataframe['year_month'] = daily_dataframe['date'].dt.to_period('M')
 monthly_avg_temp = daily_dataframe.groupby('year_month')['temperature_2m_mean'].mean().reset_index()
 monthly_avg_temp.columns = ['Year-Month', 'Average Temperature']
 
 
+monthly_avg_temp['Average Temperature'] = monthly_avg_temp['Average Temperature'].round(2)
+monthly_avg_temp['Month Name'] = monthly_avg_temp['Year-Month'].dt.strftime('%B')
+
+# Criando o gráfico de linha
+fig_mes_temp = px.line(
+    monthly_avg_temp,
+    x='Month Name',
+    y='Average Temperature',
+    title='Temperatura Média Mensal no Rio de Janeiro de 01/01/2024 a 01/08/2024',
+    labels={'Month Name': 'Mês', 'Average Temperature': 'Temperatura Média (°C)'},
+    markers=True,
+    color_discrete_sequence=px.colors.qualitative.Pastel2
+)
+
+# Adicionando layout ao gráfico
+fig_mes_temp.update_layout(
+    xaxis=dict(
+        tickmode='linear',
+    ),
+    yaxis=dict(
+        title='Temperatura Média (°C)'
+    )
+)
+
+aba3.plotly_chart(fig_mes_temp)
+# Exibindo o gráfico
+#fig.show()
+
+df_merged = pd.merge(daily_dataframe, df, left_on='weather_code', right_on='cod', how='left')
+df_merged = df_merged.drop(columns=['cod'])
+
+df_merged['date'] = pd.to_datetime(df_merged['date'])
+df_merged['date'] = df_merged['date'].dt.date
+
+df_public_holidays['Date'] = pd.to_datetime(df_public_holidays['Date'])
+df_merged['date'] = pd.to_datetime(df_merged['date'])
+
+start_date = '2024-01-01'
+end_date = '2024-08-01'
 
 
+df_public_holidays_filtered = df_public_holidays[(df_public_holidays['Date'] >= start_date) & (df_public_holidays['Date'] <= end_date)]
+df_merged_feriado = pd.merge(df_public_holidays_filtered, df_merged, left_on='Date', right_on='date', how='left')
+df_merged_feriado = df_merged_feriado[['Date', 'Name', 'temperature_2m_mean', 'day_description']]
 
+df_merged_feriado['temperature_2m_mean'] = df_merged_feriado['temperature_2m_mean'].round(2)
+
+#df_merged_feriado
+
+aba3.subheader("A tab with the data") 
+aba3.dataframe(df_merged_feriado) 
