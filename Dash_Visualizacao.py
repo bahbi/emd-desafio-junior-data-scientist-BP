@@ -260,10 +260,10 @@ datas_finais_evento = ['2022-09-11']
 total_dias_evento2 = calcular_total_dias_evento(datas_iniciais_evento, datas_finais_evento)
 
 Rock_geral_dias= (total_dias_evento1 + total_dias_evento2)
-Rock_geral_dias
+#Rock_geral_dias
 
 media_diaria_categoria3 = calcular_media_diaria(contagem_categorias, 'Rock in Rio', Rock_geral_dias)
-media_diaria_categoria3
+#media_diaria_categoria3
 
 
 datas_iniciais_evento = ['2023-02-18']
@@ -274,7 +274,7 @@ total_dias_evento_ca = calcular_total_dias_evento(datas_iniciais_evento, datas_f
 
 media_diaria_categoria1 = calcular_media_diaria(contagem_categorias, 'Carnaval', total_dias_evento_ca)
 
-media_diaria_categoria1
+#media_diaria_categoria1
 
 datas_iniciais_evento = ['2022-12-30']
 datas_finais_evento = ['2023-01-01']
@@ -449,6 +449,16 @@ df_merged_feriado = df_merged_feriado[['Date', 'Name', 'temperature_2m_mean', 'd
 
 df_merged_feriado['temperature_2m_mean'] = df_merged_feriado['temperature_2m_mean'].round(2)
 
+df_merged_feriado.rename(columns={
+    'Date': 'Data', 
+    'Name': 'Feriado', 
+    'temperature_2m_mean': 'Temperatura média',
+    'day_description': 'Tempo'
+}, inplace=True)
+
+df_merged_feriado = df_merged_feriado[['Feriado','Temperatura média','Tempo']]
+# Exibindo o DataFrame renomeado
+#df_merged_feriado.head()
 #df_merged_feriado
 
 aba3.subheader("Acompanhando o Tempo e a temperatura média em cada feriado de 01/01/2024 a 01/08/2024") 
