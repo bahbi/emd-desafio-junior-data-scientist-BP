@@ -29,6 +29,7 @@ Tutorial para acessar dados no BigQuery, desde a criação da conta no GCP até 
 
 4. **Visualização:**
    - ➡️[Acompanhe a visualização de dados aqui](https://visualiza-rio-emd-desafio-junior-data-scientist-bp.streamlit.app/)
+   - As vezes é necessário aguardar alguns minutos para visualizar todas as informações
 
 
 **captura inicial**
