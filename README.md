@@ -32,12 +32,6 @@ Tutorial para acessar dados no BigQuery, desde a criação da conta no GCP até 
    - As vezes é necessário aguardar alguns minutos para visualizar todas as informações
 
 
-**captura inicial**
-
-<img src="Captura de tela 2024-02-25 093550.png">
-
-
-
 ## Notas Adicionais
 
 - Certifique-se de ter acesso aos conjuntos de dados mencionados no BigQuery para executar as consultas SQL.
