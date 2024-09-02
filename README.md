@@ -8,7 +8,7 @@ Neste desafio, o objetivo é avaliar habilidades técnicas em manipulação de d
 - `analise_sql.sql`: Respostas em SQL para as perguntas do desafio. Estas consultas podem ser executadas diretamente no BigQuery.
 - `analise_python.ipynb`: Respostas em Python para as perguntas do desafio. Este arquivo pode ser carregado no Google Colab.
 -  `analise_api.ipynb`: Arquivo com as respostas das perguntas da API
-- `Dash_Visualizacao.py`: Arquivo  contendo visualizações criadas utilizando Streamlit.
+- `Dash_Visualizacao.py`: Arquivo contendo visualizações criadas utilizando Streamlit.
 
 ## Ferramentas e Recursos
 Você precisará de acesso ao Google Cloud Platform (GCP) para utilizar o BigQuery e consultar os dados públicos disponíveis no projeto datario. Além disso, vamos utilizar a biblioteca basedosdados em Python para acessar os dados do BigQuery.
