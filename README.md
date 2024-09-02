@@ -7,7 +7,7 @@ Neste desafio, o objetivo é avaliar habilidades técnicas em manipulação de d
 - `perguntas_api.md` e `perguntas_sql.md`: Arquivo que contém as perguntas específicas e suas respostas.
 - `analise_sql.sql`: Respostas em SQL para as perguntas do desafio. Estas consultas podem ser executadas diretamente no BigQuery.
 - `analise_python.ipynb`: Respostas em Python para as perguntas do desafio. Este arquivo pode ser carregado no Google Colab.
--  `analise_api.ipynb`: Arquivo com as respostas das perguntas da API
+-  `analise_api.ipynb`: Arquivo com as respostas das perguntas da API, o arquivo `descriptions.json` encontra-se em Dados_1 
 - `Dash_Visualizacao.py`: Arquivo contendo visualizações criadas utilizando Streamlit.
 
 ## Ferramentas e Recursos
