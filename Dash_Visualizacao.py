@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.express as px
 
 
-st.title("Título aqui") 
+st.title("Insights das análises relacionadas ao Rio de Janeiro") 
 
 ## Visualização no streamlit
 aba1, aba2, aba3 = st.tabs(['Chamados', 'Chamados por evento','Sobre o clima'])
@@ -23,12 +23,12 @@ df_uniao_chamados_bairros = pd.merge(df1_selecionado, df_selecionado_bairros, on
 #Funções aqui
 
 #Organiza geral
-st.markdown("*Streamlit* is **really** ***cool***.")
+st.markdown("Produzido por: Bárbara Pires")
 
 # Conteúdo da aba1 - exibição do DataFrame
 
-aba1.metric('Quantidade de Chamados', Chamados_1746_04_01.shape[0])
-aba1.subheader("Chamados - DataFrame Visualização")
+aba1.metric('Chamados abertos em 01/04/2023', Chamados_1746_04_01.shape[0])
+aba1.subheader("Entendendo um pouco mais sobre os chamados abertos no dia 01/04/2023")
 #aba1.dataframe(Chamados_1746_04_01)
 
 # Adição do novo conteúdo na aba1
@@ -70,7 +70,7 @@ fig_tipo = criar_grafico_barras(df_ocorrencias_por_tipo,
                                 y='tipo', 
                                 top_n=10, 
                                 orientation='h', 
-                                titulo='Top 10 Tipos de Ocorrências',
+                                titulo='Tipos de chamados predominantes',
                                 label_x='Quantidade de Ocorrências',
                                 label_y='', 
                                 paleta=px.colors.qualitative.Pastel2)
@@ -78,12 +78,12 @@ fig_tipo = criar_grafico_barras(df_ocorrencias_por_tipo,
 fig_tipo.update_layout(yaxis={'categoryorder': 'total ascending'})
 
 # Exibindo o gráfico de barras na aba1
-aba1.subheader("Chamados - gráfico dos tipos")
+#aba1.subheader("Chamados - gráfico dos tipos")
 aba1.plotly_chart(fig_tipo)
 
 bairros_mais_chamados = df_uniao_chamados_bairros['nome'].value_counts()#.head(10)
 bairros_mais_chamados_df = pd.DataFrame({'nome':bairros_mais_chamados.index, 'contagem':bairros_mais_chamados.values})
-bairros_mais_chamados_df.head()
+#bairros_mais_chamados_df.head()
 
 
 fig_bairros = criar_grafico_barras(bairros_mais_chamados_df,
@@ -91,7 +91,7 @@ fig_bairros = criar_grafico_barras(bairros_mais_chamados_df,
                                 y='nome', 
                                 top_n=10, 
                                 orientation='h', 
-                                titulo='Top 10 Tipos de bairros',
+                                titulo='Principais bairros com chamados',
                                 label_x='Quantidade de Ocorrências',
                                 label_y='', 
                                 paleta=px.colors.qualitative.Pastel2)
@@ -99,7 +99,7 @@ fig_bairros = criar_grafico_barras(bairros_mais_chamados_df,
 fig_bairros.update_layout(yaxis={'categoryorder': 'total ascending'})
 
 # Exibindo o gráfico de barras na aba1
-aba1.subheader("Chamados - Gráfico de bairros")
+#aba1.subheader("Chamados - Gráfico de bairros")
 aba1.plotly_chart(fig_bairros)
 
 subprefeitura_chamados = df_uniao_chamados_bairros['subprefeitura'].value_counts() #.head(10)
@@ -111,7 +111,7 @@ fig_subprefeitura = criar_grafico_barras(subprefeitura_chamados,
                                 y='subprefeitura', 
                                 top_n=10, 
                                 orientation='h', 
-                                titulo='Top 10 Tipos de Subprefeitura',
+                                titulo='Subprefeituras com mais chamados',
                                 label_x='Quantidade de Ocorrências',
                                 label_y='', 
                                 paleta=px.colors.qualitative.Pastel2)
@@ -119,7 +119,7 @@ fig_subprefeitura = criar_grafico_barras(subprefeitura_chamados,
 fig_subprefeitura.update_layout(yaxis={'categoryorder': 'total ascending'})
 
 # Exibindo o gráfico de barras na aba1
-aba1.subheader("Chamados - Gráfico de Subprefeitura")
+#aba1.subheader("Chamados - Gráfico de Subprefeitura")
 aba1.plotly_chart(fig_subprefeitura)
 
 chamados_por_subprefeitura = df_uniao_chamados_bairros.groupby('subprefeitura')['id_chamado'].count()
@@ -134,7 +134,7 @@ fig_subprefeitura_ind = criar_grafico_barras(df_tipos_correspondentes,
                                 y='tipo', 
                                 top_n=10, 
                                 orientation='h', 
-                                titulo='Tipos predominantes na Subprefeitura Zona Norte',
+                                titulo='Tipos de chamados predominantes na Subprefeitura Zona Norte',
                                 label_x='Quantidade de Ocorrências',
                                 label_y='', 
                                 paleta=px.colors.qualitative.Pastel2)
@@ -142,7 +142,7 @@ fig_subprefeitura_ind = criar_grafico_barras(df_tipos_correspondentes,
 fig_subprefeitura_ind .update_layout(yaxis={'categoryorder': 'total ascending'})
 
 # Exibindo o gráfico de barras na aba1
-aba1.subheader("Chamados - Gráfico de Subprefeitura")
+#aba1.subheader("Chamados - Gráfico de Subprefeitura")
 aba1.plotly_chart(fig_subprefeitura_ind)
 
 fig_mapa_sub = px.scatter_mapbox(df_uniao_chamados_bairros,
@@ -153,11 +153,10 @@ fig_mapa_sub = px.scatter_mapbox(df_uniao_chamados_bairros,
                             zoom=10,
                             mapbox_style="carto-positron",
                             center=dict(lat=-22.9068467, lon=-43.1728965),
-                            title='Pontos de Chamados por Bairro')
-
+                            title='Distribuição de chamados por subprefeitura')
 #fig_mapa_sub
 
-aba1.subheader("Chamados - distribuição de chamados por subprefeituras")
+#aba1.subheader("Chamados - distribuição de chamados por subprefeituras")
 aba1.plotly_chart(fig_mapa_sub)
 #------------------------------------------------------
 # Conteúdo da aba1 - exibição do gráfico
@@ -177,8 +176,8 @@ df2_selecionado = df_filtrado1[['id_chamado', 'data_inicio','id_bairro','categor
 df3 = pd.read_csv('./Dados_1/hoteleira_ocupacao.csv', delimiter=',')
 df_uniao_chamados_bairros_PS = pd.merge(df2_selecionado, df_selecionado_bairros, on='id_bairro', how='left')
 
-aba2.metric('Quantidade de Chamados', df_uniao_chamados_bairros_PS.shape[0])
-aba2.subheader("teste") 
+aba2.metric('Chamados com o subtipo "Perturbação do sossego" foram abertos desde 01/01/2022 até 31/12/2023', df_uniao_chamados_bairros_PS.shape[0])
+aba2.subheader("Sobre os chamados com o subtipo Perturbação do sossego") 
 
 #grafico 1
 df_chamados = pd.DataFrame(df_filtrado1)
@@ -215,7 +214,7 @@ fig_tipo_2 = px.bar(
     y='numero_aparicoes',  # Inverter a ordem de x e y
     orientation='v',  # Mudar para vertical
     labels={'numero_aparicoes': 'Quantidade', 'evento': ''}, 
-    title='Top 10 Tipos de Ocorrências',
+    title='Quantidade de chamados do subtipo "Perturbação do sossego" abertos em cada evento',
     color_discrete_sequence=px.colors.qualitative.Pastel2  # Escolha da paleta de cores
 )
 
@@ -223,9 +222,114 @@ fig_tipo_2 = px.bar(
 fig_tipo_2.update_layout(xaxis={'categoryorder': 'total descending'})
 
 # Exibindo o gráfico de barras na aba1
-aba2.subheader("Chamados - Gráfico de bairros")
+
 aba2.plotly_chart(fig_tipo_2)
 
+#-----------------
+#PARTE DA MÉDIA:
+
+#Função para contabilizar os dias
+def calcular_total_dias_evento(datas_iniciais_evento, datas_finais_evento):
+
+    data_inicial_primeiro = pd.to_datetime(datas_iniciais_evento[0])
+    data_final_ultimo = pd.to_datetime(datas_finais_evento[-1])
+
+
+    total_dias = (data_final_ultimo - data_inicial_primeiro).days + 1
+
+    return total_dias
+
+def calcular_media_diaria(contagem_categorias, evento, total_dias_evento):
+
+    categoria_desejada = contagem_categorias[contagem_categorias['evento'] == evento]
+
+
+    media_diaria = round(categoria_desejada['numero_aparicoes'] / total_dias_evento,2)
+
+    return media_diaria
+
+datas_iniciais_evento = ['2022-09-02']
+datas_finais_evento = ['2022-09-04']
+
+total_dias_evento1 = calcular_total_dias_evento(datas_iniciais_evento, datas_finais_evento)
+
+
+datas_iniciais_evento = ['2022-09-08']
+datas_finais_evento = ['2022-09-11']
+
+total_dias_evento2 = calcular_total_dias_evento(datas_iniciais_evento, datas_finais_evento)
+
+Rock_geral_dias= (total_dias_evento1 + total_dias_evento2)
+Rock_geral_dias
+
+media_diaria_categoria3 = calcular_media_diaria(contagem_categorias, 'Rock in Rio', Rock_geral_dias)
+media_diaria_categoria3
+
+
+datas_iniciais_evento = ['2023-02-18']
+datas_finais_evento = ['2023-02-21']
+
+total_dias_evento_ca = calcular_total_dias_evento(datas_iniciais_evento, datas_finais_evento)
+
+
+media_diaria_categoria1 = calcular_media_diaria(contagem_categorias, 'Carnaval', total_dias_evento_ca)
+
+media_diaria_categoria1
+
+datas_iniciais_evento = ['2022-12-30']
+datas_finais_evento = ['2023-01-01']
+
+total_dias_evento_re = calcular_total_dias_evento(datas_iniciais_evento, datas_finais_evento)
+
+media_diaria_categoria2 = calcular_media_diaria(contagem_categorias, 'Reveillon', total_dias_evento_re)
+
+df_media_diaria = pd.DataFrame({
+    'evento': ['Rock in Rio', 'Carnaval', 'Reveillon'],
+    'media_diaria': [media_diaria_categoria3, media_diaria_categoria1, media_diaria_categoria2]
+})
+
+# Ajustando para remover os números indesejados
+df_media_diaria['media_diaria'] = df_media_diaria['media_diaria'].astype(str).str.extract(r'(\d+\.\d+)')
+
+datas_iniciais_evento = ['2022-01-01']
+datas_finais_evento = ['2023-12-31']
+
+total_dias_geral = calcular_total_dias_evento(datas_iniciais_evento, datas_finais_evento)
+
+media_diaria_geral = round(len(df_filtrado1['id_chamado']) / total_dias_geral,2)
+
+novo_evento = 'Todo Período'
+nova_media_diaria = media_diaria_geral
+
+# Verifica se o novo evento já existe no DataFrame
+if not df_media_diaria[df_media_diaria['evento'] == novo_evento].empty:
+    print(f"O evento '{novo_evento}' já está presente no DataFrame.")
+else:
+    # Cria o DataFrame para a nova linha
+    df_nova_linha = pd.DataFrame({'evento': [novo_evento], 'media_diaria': [nova_media_diaria]})
+
+    # Concatena os DataFrames
+    df_media_diaria = pd.concat([df_media_diaria, df_nova_linha], ignore_index=True)
+
+df_media_diaria['media_diaria'] = df_media_diaria['media_diaria'].astype(float)
+df_ordenado = df_media_diaria.sort_values(by='media_diaria', ascending=False)
+
+fig_media = px.bar(
+    df_ordenado .head(10),
+    x='evento',
+    y='media_diaria',  # Inverter a ordem de x e y
+    orientation='v',  # Mudar para vertical
+    labels={'media_diaria': 'Média diária', 'evento': ''},
+    title='Média diária por evento e de chamados abertos desse subtipo (01/01/2022 até 31/12/2023)',
+    color_discrete_sequence=px.colors.qualitative.Pastel2  # Escolha da paleta de cores
+)
+
+# Ordenar o eixo x (tipos) do maior para o menor com base na contagem
+fig_media.update_layout(xaxis={'categoryorder': 'total descending'})
+
+aba2.plotly_chart(fig_media)
+
+#-------------------
 # Mostrar o gráfico
 #fig_tipo.show()
 
@@ -239,7 +343,7 @@ df_tendencia = df_uniao_chamados_bairros_PS.groupby(df_uniao_chamados_bairros_PS
 fig = px.line(df_tendencia,
                   x='data_inicio',
                   y='id_chamado',
-                  title='Tendência de Chamados ao Longo do Tempo',
+                  title='Tendência de Chamados do subtipo ao Longo do Tempo',
                   color_discrete_sequence=px.colors.qualitative.Pastel2)
 
 fig.update_xaxes(title_text='Data')
@@ -257,7 +361,7 @@ fig_m1 = px.scatter_mapbox(df_final,
                             zoom=10,
                             mapbox_style="carto-positron",
                             center=dict(lat=-22.9068467, lon=-43.1728965),
-                            title='Pontos de Chamados por evento')
+                            title='Distribuição de Chamados por evento')
 
 #fig_m1
 aba2.plotly_chart(fig_m1)
@@ -268,8 +372,8 @@ df_public_holidays = pd.read_csv('./Dados_1/feriados_ano_pt.csv', delimiter=',')
 daily_dataframe = pd.read_csv('./Dados_1/clima_temperatura.csv', delimiter=',')
 df= pd.read_csv('./Dados_1/classi_tempo_pt.csv', delimiter=',')
 
-aba3.metric('Quantidade de Feriados', df_public_holidays.shape[0])
-aba3.subheader("A tab with the data") 
+aba3.metric('Quantidade de Feriados no Brasil em 2024', df_public_holidays.shape[0])
+aba3.subheader("Feriados do ano") 
 aba3.dataframe(df_public_holidays) 
 
 df_public_holidays['Weekday or Weekend'] = df_public_holidays['Day of Week'].apply(lambda x: 'Semana' if x in ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira'] else 'Fim de Semana')
@@ -282,7 +386,7 @@ fig_dias_semna = px.bar(
     y='Total Ocorrências',  # Inverter a ordem de x e y
     orientation='v',  # Mudar para vertical
     labels={'Total Ocorrências': 'Quantidade', 'Weekday or Weekend': ''},
-    title='Média geral por evento e outro ',
+    title='Distribuição de feriados pela semana',
     color_discrete_sequence=px.colors.qualitative.Pastel2  # Escolha da paleta de cores
 )
 
@@ -347,5 +451,5 @@ df_merged_feriado['temperature_2m_mean'] = df_merged_feriado['temperature_2m_mea
 
 #df_merged_feriado
 
-aba3.subheader("A tab with the data") 
+aba3.subheader("Acompanhando o Tempo e a temperatura média em cada feriado de 01/01/2024 a 01/08/2024") 
 aba3.dataframe(df_merged_feriado) 
